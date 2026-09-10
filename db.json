@@ -1,0 +1,13 @@
+{
+    "users":[
+        {
+            "id":1,
+            "username":"midlajco",
+            "password":"password@123",
+            "fullname":"midlajco",
+            "avatar": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop",
+            "createdAt":"2026-02-17T10:00:00Z"
+            
+        }
+    ]
+}
