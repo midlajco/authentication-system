@@ -6,3 +6,9 @@ export const getUserByEmail = async(email)=>{
         
 
     }
+export const getUserById =async(id)=>{
+  const response =await axios.get(`http://localhost:3001/users/${id}`)
+    return response.data
+  
+}
+
