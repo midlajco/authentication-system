@@ -26,6 +26,13 @@ function AuthProvider({children}){
 
     }
 
+    const logout = ()=>{
+        setUser(null);
+        localStorage.removeItem("userId")
+
+
+    }
+
     const fetchCurrentUser =async ()=>{
         const userId =localStorage.getItem("userId");
 
@@ -35,7 +42,7 @@ function AuthProvider({children}){
 
         const user =await getUserById(userId);
         setUser(user)
-         console.log("Fetched user:", user);
+         
     }
 
     useEffect( ()=> {
@@ -45,8 +52,13 @@ function AuthProvider({children}){
 
     const[user,setUser] =useState(null);
 
+    
+
     return(
-        <AuthContext.Provider value={{user,login,fetchCurrentUser}} >
+        <AuthContext.Provider value={{  user,
+                                        login,
+                                        fetchCurrentUser,
+                                        logout}} >
             {children}
         </AuthContext.Provider>
     )
