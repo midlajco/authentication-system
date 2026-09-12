@@ -8,7 +8,7 @@ const AuthContext =createContext();
 
 function AuthProvider({children}){
 
-
+//login
     const login= async (email,password)=>{
        const users =await getUserByEmail(email);
        if(users.length === 0){
@@ -25,23 +25,25 @@ function AuthProvider({children}){
        localStorage.setItem("userId",user.id)
 
     }
-
+//logout
     const logout = ()=>{
         setUser(null);
         localStorage.removeItem("userId")
 
 
     }
+//fetch-loginned user
 
     const fetchCurrentUser =async ()=>{
         const userId =localStorage.getItem("userId");
 
         if(!userId){
-            return;
-        }
+            setIsLoading(false)
+             return ; }
 
         const user =await getUserById(userId);
         setUser(user)
+        setIsLoading(false)
          
     }
 
@@ -52,13 +54,23 @@ function AuthProvider({children}){
 
     const[user,setUser] =useState(null);
 
+// check- is authenticated
+
+    const isAuthenticated =() =>{
+        return user  !==  null;
+    }
+
+     const [isLoading,setIsLoading]=useState(true)
+
     
 
     return(
         <AuthContext.Provider value={{  user,
                                         login,
                                         fetchCurrentUser,
-                                        logout}} >
+                                        logout,
+                                        isAuthenticated,
+                                        isLoading}} >
             {children}
         </AuthContext.Provider>
     )

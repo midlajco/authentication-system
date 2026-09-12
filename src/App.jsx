@@ -1,6 +1,8 @@
 import {BrowserRouter,Routes,Route} from "react-router-dom"
 import {AuthProvider} from "./contexts/AuthContext"
 import LoginPage from "./pages/LoginPage"
+import Dashboard from "./pages/Dashboard"
+import ProtectedRoute from "./components/ProtectedRoute"
 
 function App() {
 
@@ -9,6 +11,11 @@ function App() {
      <BrowserRouter>
         <Routes>
             <Route  path="/login"  element={<LoginPage/>}/>
+            <Route  path="/dashboard"  
+                 element={  <ProtectedRoute>
+                                    <Dashboard/>
+                            </ProtectedRoute>}/>
+              
             
         </Routes>
     </BrowserRouter>
