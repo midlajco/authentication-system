@@ -12,7 +12,7 @@ import { getUserByEmail,
 
 function AuthProvider({children}){
 
-    const navigate =useNavigate();
+    
     const[user,setUser] =useState(null);
     const [isLoading,setIsLoading]=useState(true)
 
