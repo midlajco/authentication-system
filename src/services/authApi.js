@@ -11,4 +11,8 @@ export const getUserById =async(id)=>{
     return response.data
   
 }
+export const createUser = async(userData)=>{
+  const response =await axios.post("http://localhost:3001/users",userData)
+  return response.data
+}
 

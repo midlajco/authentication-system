@@ -1,38 +1,52 @@
-import {  createContext } from "react"
-import { useState,useEffect } from "react"
-import { getUserByEmail,getUserById } from "../services/authApi";
+import { useState,useEffect,createContext } from "react"
+import { useNavigate } from "react-router-dom";
+import { getUserByEmail,
+        getUserById,
+        createUser } from "../services/authApi";
 
 
-const AuthContext =createContext();
+ const AuthContext =createContext();
+ 
+ 
 
 
 function AuthProvider({children}){
+
+    const navigate =useNavigate();
+    const[user,setUser] =useState(null);
+    const [isLoading,setIsLoading]=useState(true)
+
+
+//register    
+   
+    const register =async(userData)=>{
+      const result = await createUser(userData)
+      return result
+    };
+    
 
 //login
     const login= async (email,password)=>{
        const users =await getUserByEmail(email);
        if(users.length === 0){
-        console.log("User not found")
-        return
+        return false;
        }
        if(password !==users[0].password){
-        console.log("incorrect password")
-        return
+        return false;
        }
        const user =users[0];
-       console.log("User found",user)
        setUser(user)
        localStorage.setItem("userId",user.id)
+       return true;
+      
 
-    }
+    };
 //logout
     const logout = ()=>{
         setUser(null);
-        localStorage.removeItem("userId")
-
-
-    }
-//fetch-loginned user
+        localStorage.removeItem("userId");
+  };
+//fetch-loginned user after referesh
 
     const fetchCurrentUser =async ()=>{
         const userId =localStorage.getItem("userId");
@@ -42,25 +56,27 @@ function AuthProvider({children}){
              return ; }
 
         const user =await getUserById(userId);
-        setUser(user)
-        setIsLoading(false)
+        setUser(user);
+        setIsLoading(false);
          
     }
+
+      // Check authentication when app starts
 
     useEffect( ()=> {
         fetchCurrentUser();
     } ,[])
 
 
-    const[user,setUser] =useState(null);
+    
 
-// check- is authenticated
+// check- if user is logged in
 
     const isAuthenticated =() =>{
         return user  !==  null;
     }
 
-     const [isLoading,setIsLoading]=useState(true)
+
 
     
 
@@ -70,7 +86,8 @@ function AuthProvider({children}){
                                         fetchCurrentUser,
                                         logout,
                                         isAuthenticated,
-                                        isLoading}} >
+                                        isLoading,
+                                        register}} >
             {children}
         </AuthContext.Provider>
     )

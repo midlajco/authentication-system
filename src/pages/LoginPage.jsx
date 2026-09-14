@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useContext } from "react";
 import {AuthContext} from "../contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 
 function LoginPage() {
@@ -9,15 +10,20 @@ const [email,setEmail]=useState("");
 const [password,setPassword]=useState("");
 
 
-const {login}=useContext(AuthContext)
+const {login}=useContext(AuthContext);
+const navigate =useNavigate();
 
 
 
 
-const handleSubmit = (e) => {
+const handleSubmit =async  (e) => {
   e.preventDefault();
+  const success =await login(email,password);
+  if ( success === true ){
+     navigate("/dashboard")
 
-  login(email,password)
+  }
+ 
 };
 
   return (
