@@ -2,9 +2,12 @@ import { useState } from "react";
 import { useContext } from "react";
 import {AuthContext} from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { validateLogin } from "../utils/validation";
 
 
 function LoginPage() {
+
+  const [errors,setErrors]=useState({})
     
 const [email,setEmail]=useState("");
 const [password,setPassword]=useState("");
@@ -16,9 +19,28 @@ const navigate =useNavigate();
 
 
 
+
+
+
+
+
 const handleSubmit =async  (e) => {
   e.preventDefault();
+  const credinentals ={
+  email,
+  password
+}
+ const validationErrors =validateLogin(credinentals)
+ 
+ 
+  
+   setErrors(validationErrors);
+  if(Object.keys(validationErrors).length > 0){
+    return;
+  }
+ 
   const success =await login(email,password);
+
   if ( success === true ){
      navigate("/dashboard")
 
@@ -43,7 +65,11 @@ const handleSubmit =async  (e) => {
                         name="email"
                         className="w-full rounded-md border p-2 focus:outline-none focus:ring-2"
                         value={email} 
-                        onChange={(e)=>setEmail(e.target.value)}/>
+                        onChange={(e)=>setEmail(e.target.value)}
+                        />
+                         {errors.email && (
+                         <p  className="mt-1 text-sm text-red-500"> 
+                            {errors.email}</p>)}
             </div>
             <div>
                 <label htmlFor="password"
@@ -55,7 +81,11 @@ const handleSubmit =async  (e) => {
                         value={password}
                         onChange={(e)=>setPassword(e.target.value)}
                         className="w-full rounded-md border p-2 focus:outline-none focus:ring-2"
-      />
+                          />
+                        {errors.password && (
+                        <p className="mt-1 text-sm text-red-500" >
+                            {errors.password}</p>)}
+      
             </div>
             <button type="submit"
                   className="w-full rounded-md bg-blue-600 p-2 font-medium text-white hover:bg-blue-700"

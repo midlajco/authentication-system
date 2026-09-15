@@ -36,5 +36,24 @@ export function validateRegister(userData){
     return errors;
 };
 
+export function validateLogin(credinentals){
+    const errors ={};
+
+    if( ! credinentals.email.trim()){
+        errors.email ="email is required"
+    }  else if (
+      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(credinentals.email)
+    ) {
+        errors.email = "Enter a valid email";
+    }
+
+   //pass
+   
+    if (!credinentals.password) {
+        errors.password = "Password is required";
+    }
+
+    return errors
+}
 
 
